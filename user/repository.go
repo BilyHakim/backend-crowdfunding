@@ -36,7 +36,7 @@ func (r *repository) FindByEmail(email string) (User, error) {
 	return user, nil
 }
 
-func (r *repository) FindByID(ID string) (User, error) {
+func (r *repository) FindByID(ID int) (User, error) {
 	var user User
 
 	err := r.db.Where("ID = ?", ID).Find(&user).Error

@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	dsn := "root:biworksmanjarodb@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
-	//dsn := "root:databasebily@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:biworksmanjarodb@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:databasebily@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -29,6 +29,7 @@ func main() {
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailibility)
+	api.POST("/avatars", userHandler.UploadAvatar)
 
 	router.Run()
 }
