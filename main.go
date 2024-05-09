@@ -15,8 +15,8 @@ import (
 )
 
 func main() {
-	//dsn := "root:biworksmanjarodb@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := "root:databasebily@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:biworksmanjarodb@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:databasebily@tcp(127.0.0.1:3306)/bwa-crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -45,7 +45,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		authHeader := c.GetHeader("Authorization")
 
 		if !strings.Contains(authHeader, "Bearer") {
-			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := helper.APIResponse("Unauthorized 1", http.StatusUnauthorized, "error", nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -53,20 +53,20 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		// Bearer Tokentokentoken
 		tokenString := ""
 		arrayToken := strings.Split(authHeader, " ")
-		if len(tokenString) == 2 {
+		if len(arrayToken) == 2 {
 			tokenString = arrayToken[1]
 		}
 
 		token, err := authService.ValidateToken(tokenString)
 		if err != nil {
-			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := helper.APIResponse("Unauthorized 2", http.StatusUnauthorized, "error", nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
 
 		claim, ok := token.Claims.(jwt.MapClaims)
 		if !ok || !token.Valid {
-			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := helper.APIResponse("Unauthorized 3", http.StatusUnauthorized, "error", nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -74,7 +74,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		userID := int(claim["user_id"].(float64))
 		user, err := userService.GetUserByID(userID)
 		if err != nil {
-			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			response := helper.APIResponse("Unauthorized 4", http.StatusUnauthorized, "error", nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
